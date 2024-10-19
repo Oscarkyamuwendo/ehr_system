@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="icon" href="static/images/logo.jpg" type="text/x-icon" />
+    <link rel="stylesheet" href="static/main.css">
+</head>
+<body>
+    <header class="header">
+        <div class="school-budge-area">
+            <img src="images/budge.png" class="school-budge" alt="EHR Logo" />
+            <h1 class="school-name">EHR Information System</h1>
+        </div>
+        <nav class="navigation-area">
+            <a href="about">About Us</a>
+            <a href="login">Login</a>
+            <a href="#info">EHR Info</a>
+        </nav>
+    </header>
+
+    <main>
+                <section id="registration">
+            <h2>Doctor Registration</h2>
+            <form class="registration-form">
+                <p>
+                    <label for="reg-username">Username</label>
+                    <input type="text" id="reg-username" name="reg-username" placeholder="username@domain.com" required />
+                </p>
+                <p>
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" name="reg-password" required />
+                </p>
+                <p>
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required />
+                </p>
+                <p>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required />
+                </p>
+                <p>
+                    <input type="submit" value="Register" class="register-button" />
+                     <p>Already have an account? <a href="login">Login</a></p>
+
+                </p>
+            </form>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 EHR Information System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

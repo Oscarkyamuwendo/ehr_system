@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="icon" href="static/images/logo.jpg" type="text/x-icon" />
+    <link rel="stylesheet" href="static/main.css">
+</head>
+<body>
+    <header class="header">
+        <div class="school-budge-area">
+            <img src="images/budge.png" class="school-budge" alt="EHR Logo" />
+            <h1 class="school-name">EHR Information System</h1>
+        </div>
+        <nav class="navigation-area">
+            <a href="about">About Us</a>
+            <a href="register">Doctor Registration</a>
+            <a href="#info">EHR Info</a>
+        </nav>
+    </header>
+
+    <main>
+        
+        <section id="login">
+            <h2>Login</h2>
+            <div class="login-form">
+                <form>
+                    <p>
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Email address" required />
+                    </p>
+                    <p>
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required />
+                    </p>
+                    <p>
+                        <input type="submit" value="Log in" class="login-button" />
+                    </p>
+                    <p>
+                        <p>Don't have an account? <a href="register">Register</a></p>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+    
+
+        <section id="info">
+            <h2>EHR Information</h2>
+            <p>The Electronic Health Record (EHR) system allows doctors to manage patient data such as:</p>
+            <ul>
+                <li>Demographics</li>
+                <li>Medical history</li>
+                <li>Medication and allergies</li>
+                <li>Immunization status</li>
+                <li>Laboratory test results</li>
+                <li>Radiology images</li>
+                <li>Vital signs</li>
+                <li>Personal statistics like age and weight</li>
+                <li>Billing information</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 EHR Information System. All rights reserved.</p>
+    </footer>
+</body>
+</html>
