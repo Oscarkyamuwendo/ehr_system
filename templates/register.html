@@ -10,7 +10,7 @@
 <body>
     <header class="header">
         <div class="school-budge-area">
-            <img src="images/budge.png" class="school-budge" alt="EHR Logo" />
+            <img src="static/images/logo.jpg" class="school-budge" alt="EHR Logo" />
             <h1 class="school-name">EHR Information System</h1>
         </div>
         <nav class="navigation-area">
@@ -23,7 +23,7 @@
     <main>
                 <section id="registration">
             <h2>Doctor Registration</h2>
-            <form class="registration-form">
+            <form class="registration-form" action="{{ url_for('register') }}" method="POST">
                 <p>
                     <label for="reg-username">Username</label>
                     <input type="text" id="reg-username" name="reg-username" placeholder="username@domain.com" required />
@@ -55,3 +55,13 @@
     </footer>
 </body>
 </html>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul class="flashes">
+        {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
