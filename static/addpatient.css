@@ -1,0 +1,125 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body styling */
+body {
+    background-color: #f7f9fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Form container styling */
+.form-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    padding: 2rem;
+    width: 90%;
+}
+
+.form-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Section headers */
+section h3 {
+    color: rgb(2, 95, 52);
+    border-bottom: 2px solid;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Labels */
+label {
+    color: #333;
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+/* Inputs and Textareas */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="file"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.95rem;
+}
+
+/* Textarea styling */
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Button styling */
+button.submit-button {
+    background-color: rgb(2,95, 52);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.7rem;
+    text-align: center;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+button.submit-button:hover {
+    background-color: rgb(3,43, 24);
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 1.5rem;
+    }
+    
+    label, input, select, textarea, button {
+        font-size: 0.9rem;
+    }
+}
+
+/* Radio buttons and checkboxes */
+input[type="radio"],
+input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+.radio-group, .checkbox-group {
+    margin-bottom: 1rem;
+}
+
+/* Style label alignment and color for radio and checkbox groups */
+.radio-group label, .checkbox-group label {
+    color: #333;
+    font-size: 0.95rem;
+    margin-right: 1rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Group headings (optional styling) */
+.radio-group h4, .checkbox-group h4 {
+    color: #007BFF;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}

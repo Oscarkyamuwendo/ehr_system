@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Patient</title>
+    <link rel="stylesheet" href="/static/addpatient.css">
+     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+    <link rel="icon" href="static/images/logo.jpg" type="text/x-icon" />
+    <link rel="stylesheet" href="static/main.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Patient Information Form</h2>
+        <form action="{{ url_for('add_patient') }}" method="POST" enctype="multipart/form-data">
+            
+            <!-- Basic Information -->
+            <section>
+                <h3>Basic Information</h3>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required>
+
+                <label for="weight">Weight (kg):</label>
+                <input type="number" id="weight" name="weight">
+
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </section>
+
+            <!-- Medical History -->
+            <section>
+                <h3>Medical History</h3>
+                <label for="medical_history">Medical History:</label>
+                <textarea id="medical_history" name="medical_history" rows="4"></textarea>
+
+                <label for="medication">Current Medication:</label>
+                <input type="text" id="medication" name="medication">
+
+                <label for="vital_signs">vital signs:</label>
+                <input type="text" name="vital_signs" required>
+
+                <div class="checkbox-group">
+                    <h4>Allergies:</h4>
+                    <label><input type="checkbox" name="allergies" value="Pollen"> Pollen</label>
+                    <label><input type="checkbox" name="allergies" value="Dust"> Dust</label>
+                    <label><input type="checkbox" name="allergies" value="Pet Dander"> Pet Dander</label>
+                </div>
+            </section>
+
+            <!-- Immunization & Lab -->
+            <section>
+                <h3>Immunization & Lab</h3>
+                <div class="radio-group">
+                    <h4>Immunization Status:</h4>
+                    <label><input type="radio" name="immunization_status" value="Up-to-date"> Up-to-date</label>
+                    <label><input type="radio" name="immunization_status" value="Due"> Due</label>
+                </div>
+
+                <label for="lab_results">Lab Results:</label>
+                <input type="text" id="lab_results" name="lab_results">
+            </section>
+
+            <!-- Additional Information -->
+            <section>
+                <h3>Additional Information</h3>
+                <label for="last_visit_date">Last Visit Date:</label>
+                <input type="date" id="last_visit_date" name="last_visit_date">
+
+                <label for="billing_info">Billing Information:</label>
+                <textarea id="billing_info" name="billing_info" rows="3"></textarea>
+
+                <label for="radiology_images">Upload Radiology Image:</label>
+                <input type="file" id="radiology_images" name="radiology_images">
+            </section>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-button">Add Patient</button>
+        </form>
+    </div>
+</body>
+</html>

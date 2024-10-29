@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Patients</title>
+</head>
+<body>
+    <h1>Your Patients</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Medical History</th>
+            <th>Medication</th>
+            <th>Allergies</th>
+            <th>Actions</th>
+        </tr>
+        {% for patient in patients %}
+        <tr>
+            <td>{{ patient.id }}</td>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.age }}</td>
+            <td>{{ patient.medical_history }}</td>
+            <td>{{ patient.medication }}</td>
+            <td>{{ patient.allergies }}</td>
+            <td>
+                <a href="{{ url_for('edit_patient', patient_id=patient.id) }}">Edit</a> |
+                <a href="{{ url_for('delete_patient', patient_id=patient.id) }}" onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

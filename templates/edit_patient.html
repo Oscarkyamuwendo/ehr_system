@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Patient</title>
+</head>
+<body>
+    <h1>Edit Patient</h1>
+    <form method="POST">
+        <p><label for="name">Name:</label> <input type="text" id="name" name="name" value="{{ patient.name }}" required></p>
+        <p><label for="age">Age:</label> <input type="number" id="age" name="age" value="{{ patient.age }}" required></p>
+        <p><label for="medical_history">Medical History:</label> <textarea id="medical_history" name="medical_history">{{ patient.medical_history }}</textarea></p>
+        <p><label for="medication">Medication:</label> <input type="text" id="medication" name="medication" value="{{ patient.medication }}"></p>
+        <p><label for="allergies">Allergies:</label> <input type="text" id="allergies" name="allergies" value="{{ patient.allergies }}"></p>
+        <p><label for="immunization_status">Immunization Status:</label> <input type="text" id="immunization_status" name="immunization_status" value="{{ patient.immunization_status }}"></p>
+        <p><label for="lab_results">Lab Results:</label> <textarea id="lab_results" name="lab_results">{{ patient.lab_results }}</textarea></p>
+        <p><label for="radiology_images">Radiology Images:</label> <input type="text" id="radiology_images" name="radiology_images" value="{{ patient.radiology_images }}"></p>
+        <p><label for="vital_signs">Vital Signs:</label> <input type="text" id="vital_signs" name="vital_signs" value="{{ patient.vital_signs }}"></p>
+        <p><input type="submit" value="Update Patient"></p>
+    </form>
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>
