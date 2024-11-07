@@ -215,14 +215,12 @@ def register():
 
             # Check if passwords match
             if password != confirm_password:
-                flash('Passwords do not match!', 'danger')
-                return redirect(url_for('register'))
-
+                return render_template('doctor_registration.html', success=False, error="Passwords do not match!")
+            
             # Check if the username or email already exists
             if Doctor.query.filter_by(username=username).first() or Doctor.query.filter_by(email=email).first():
-                flash('Username or Email already exists!', 'danger')
-                return redirect(url_for('register'))
-
+                return render_template('doctor_registration.html', success=False, error="Username or Email already exists!")
+            
             # Password hashing
             hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
@@ -231,12 +229,14 @@ def register():
             db.session.add(new_doctor)
             db.session.commit()
 
-            flash('Registration successful! You can now log in.', 'success')
-            return redirect(url_for('login'))  # Redirect to login page after registration
+            # Return success message after registration
+            return render_template('register.html', success=True)
         else:
-            flash('Please fill out all fields.', 'danger')
+            return render_template('register.html', success=False, error="Please fill out all fields.")
     
-    return render_template('register.html')
+    # Render the registration form if GET request
+    return render_template('register.html', success=False)
+
 
 @app.route('/doctors')
 def view_doctors():

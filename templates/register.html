@@ -61,36 +61,52 @@
         </div>
     </nav>
 
-    <!-- Registration Form -->
+    <!-- Registration Form or Success Message -->
     <main class="container d-flex justify-content-center align-items-center" style="min-height: 110vh;">
         <div class="register-card">
-            <h2 class="text-center mb-4">Doctor Registration</h2>
-            <form action="{{ url_for('register') }}" method="POST" id="registrationForm">
-                <div class="mb-3">
-                    <label for="reg-username" class="form-label">Username</label>
-                    <input type="text" id="reg-username" name="reg-username" class="form-control" placeholder="username" required>
+            {% if success %}
+                <!-- Success Acknowledgment -->
+                <div class="alert alert-success text-center mb-4" role="alert">
+                    <h4 class="alert-heading">Doctor Registered Successfully!</h4>
+                    <p>Your registration has been completed successfully.</p>
+                    <a href="{{ url_for('login') }}" class="btn btn-primary">Go to Login</a>
                 </div>
-                <div class="mb-3">
-                    <label for="reg-password" class="form-label">Password</label>
-                    <input type="password" id="reg-password" name="reg-password" class="form-control" required>
-                    <small class="form-text text-muted">Use at least 8 characters, including uppercase, lowercase, numbers, and symbols.</small>
-                    <div class="progress mt-2">
-                        <div id="password-strength-bar" class="progress-bar" role="progressbar"></div>
+            {% else %}
+                {% if error %}
+                    <!-- Error Message -->
+                    <div class="alert alert-danger text-center mb-4" role="alert">
+                        <p>{{ error }}</p>
                     </div>
-                    <small id="password-strength-text" class="form-text text-muted"></small>
-                </div>
-                <div class="mb-3">
-                    <label for="confirm-password" class="form-label">Confirm Password</label>
-                    <input type="password" id="confirm-password" name="confirm-password" class="form-control" required>
-                    <small id="password-match-text" class="form-text text-muted"></small>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="email" class="form-control" required placeholder="username@domain.com" required>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Register</button>
-                <p class="text-center small mt-3">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
-            </form>
+                {% endif %}
+                <!-- Registration Form -->
+                <h2 class="text-center mb-4">Doctor Registration</h2>
+                <form action="{{ url_for('register') }}" method="POST" id="registrationForm">
+                    <div class="mb-3">
+                        <label for="reg-username" class="form-label">Username</label>
+                        <input type="text" id="reg-username" name="reg-username" class="form-control" placeholder="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reg-password" class="form-label">Password</label>
+                        <input type="password" id="reg-password" name="reg-password" class="form-control" required>
+                        <small class="form-text text-muted">Use at least 8 characters, including uppercase, lowercase, numbers, and symbols.</small>
+                        <div class="progress mt-2">
+                            <div id="password-strength-bar" class="progress-bar" role="progressbar"></div>
+                        </div>
+                        <small id="password-strength-text" class="form-text text-muted"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm-password" class="form-label">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirm-password" class="form-control" required>
+                        <small id="password-match-text" class="form-text text-muted"></small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required placeholder="username@domain.com">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                    <p class="text-center small mt-3">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+                </form>
+            {% endif %}
         </div>
     </main>
 
@@ -100,67 +116,5 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Password strength and confirmation validation
-        const passwordInput = document.getElementById('reg-password');
-        const confirmPasswordInput = document.getElementById('confirm-password');
-        const passwordStrengthBar = document.getElementById('password-strength-bar');
-        const passwordStrengthText = document.getElementById('password-strength-text');
-        const passwordMatchText = document.getElementById('password-match-text');
-
-        passwordInput.addEventListener('input', updatePasswordStrength);
-        confirmPasswordInput.addEventListener('input', checkPasswordMatch);
-
-        function updatePasswordStrength() {
-            const password = passwordInput.value;
-            let strength = 0;
-
-            if (password.length >= 8) strength++;
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[a-z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[@$!%*?&]/.test(password)) strength++;
-
-            switch (strength) {
-                case 1:
-                case 2:
-                    passwordStrengthBar.style.width = '25%';
-                    passwordStrengthBar.classList.add('bg-danger');
-                    passwordStrengthText.innerText = 'Weak';
-                    break;
-                case 3:
-                    passwordStrengthBar.style.width = '50%';
-                    passwordStrengthBar.classList.add('bg-warning');
-                    passwordStrengthText.innerText = 'Medium';
-                    break;
-                case 4:
-                    passwordStrengthBar.style.width = '75%';
-                    passwordStrengthBar.classList.add('bg-info');
-                    passwordStrengthText.innerText = 'Good';
-                    break;
-                case 5:
-                    passwordStrengthBar.style.width = '100%';
-                    passwordStrengthBar.classList.add('bg-success');
-                    passwordStrengthText.innerText = 'Strong';
-                    break;
-                default:
-                    passwordStrengthBar.style.width = '0%';
-                    passwordStrengthText.innerText = '';
-                    passwordStrengthBar.classList.remove('bg-danger', 'bg-warning', 'bg-info', 'bg-success');
-            }
-        }
-
-        function checkPasswordMatch() {
-            if (passwordInput.value === confirmPasswordInput.value) {
-                passwordMatchText.innerText = 'Passwords match!';
-                passwordMatchText.classList.add('text-success');
-                passwordMatchText.classList.remove('text-danger');
-            } else {
-                passwordMatchText.innerText = 'Passwords do not match.';
-                passwordMatchText.classList.add('text-danger');
-                passwordMatchText.classList.remove('text-success');
-            }
-        }
-    </script>
 </body>
 </html>
