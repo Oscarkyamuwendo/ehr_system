@@ -66,7 +66,7 @@ with app.app_context():
 
 # Route for the home page
 @app.route('/')
-def home():
+def index():
     return render_template('index.html')
 
 # Route for login
