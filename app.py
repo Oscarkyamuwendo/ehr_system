@@ -303,8 +303,9 @@ with app.app_context():
     db.create_all()  # Create tables in the database if they don't exist
 
 # Configure the upload folder
-UPLOAD_FOLDER = os.path.join('static', 'uploads')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+UPLOAD_FOLDER = 'static/uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Ensure the upload folder exists
 if not os.path.exists(UPLOAD_FOLDER):
