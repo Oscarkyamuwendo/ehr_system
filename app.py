@@ -7,6 +7,7 @@ from itsdangerous import URLSafeTimedSerializer
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import os
+import urllib.parse as up
 
 import pymysql
 from flask_migrate import Migrate
@@ -17,10 +18,24 @@ pymysql.install_as_MySQLdb()
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
-# MySQL configuration (XAMPP MySQL connection)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/ehr_system'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# Get the JawsDB URL from the environment variable
+url = os.environ.get('JAWSDB_URL')
 
+if url:
+    # Parse the URL
+    result = up.urlparse(url)
+
+    # Configure the database connection using JawsDB credentials
+    db_user = result.username
+    db_password = result.password
+    db_host = result.hostname
+    db_name = result.path[1:]
+
+    # Update SQLAlchemy database URI for Heroku JawsDB
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}"
+else:
+    # Fallback to the local database URI if not found
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/ehr_system'
 # Initialize SQLAlchemy
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
