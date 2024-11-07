@@ -32,6 +32,14 @@
 
     <!-- Main Form Section -->
     <main class="container my-5">
+        <!-- Success Message Section (initially hidden) -->
+        {% if success %}
+        <div class="alert alert-success text-center">
+            <h4 class="alert-heading">Patient Added Successfully!</h4>
+            <p>The patient's information has been added to the system.</p>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary mt-3">View Patients</a>
+        </div>
+        {% else %}
         <div class="card shadow p-4">
             <h2 class="text-center mb-4">Patient Information Form</h2>
             <form action="{{ url_for('add_patient') }}" method="POST" enctype="multipart/form-data">
@@ -132,9 +140,10 @@
                 <button type="submit" class="btn btn-primary w-100">Add Patient</button>
             </form>
         </div>
+        {% endif %}
     </main>
 
-    <footer class="text-white text-center py-3" id="mainNav">
+    <footer class="text-white text-center py-3">
         <p class="mb-0">&copy; 2024 EHR Information System. All rights reserved.</p>
     </footer>
 

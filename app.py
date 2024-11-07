@@ -326,52 +326,33 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def add_patient():
     if 'loggedin' in session:
         if request.method == 'POST':
-            name = request.form.get('name')
-            age = request.form.get('age')
-            weight = request.form.get('weight')
-            gender = request.form.get('gender')
-            medical_history = request.form.get('medical_history')
-            medication = request.form.get('medication')
-            allergies = request.form.get('allergies')
-            immunization_status = request.form.get('immunization_status')
-            lab_results = request.form.get('lab_results')
-            vital_signs = request.form.get('vital_signs')
-
-            # File upload
-            if 'radiology_images' in request.files:
-                file = request.files['radiology_images']
-                if file:
-                    filename = secure_filename(file.filename)
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                # Save the filename in your database or process as needed
-        
-            return redirect(url_for('view_patients'))  # Redirect to the view patients page
-
-            # Create a new Patient object and add it to the database
+            # Patient data processing here
             new_patient = Patient(
                 doctor_id=session['doctor_id'],
-                name=name,
-                age=age,
-                weight=weight,
-                gender=gender,
-                medical_history=medical_history,
-                medication=medication,
-                allergies=allergies,
-                immunization_status=immunization_status,
-                lab_results=lab_results,
-                radiology_images=radiology_image_path,
-                vital_signs=vital_signs
+                name=request.form.get('name'),
+                age=request.form.get('age'),
+                weight=request.form.get('weight'),
+                gender=request.form.get('gender'),
+                medical_history=request.form.get('medical_history'),
+                medication=request.form.get('medication'),
+                allergies=request.form.getlist('allergies'),
+                immunization_status=request.form.get('immunization_status'),
+                lab_results=request.form.get('lab_results'),
+                radiology_images=request.form.get('radiology_images'),
+                vital_signs=request.form.get('vital_signs'),
+                billing_info=request.form.get('billing_info'),
+                last_visit_date=request.form.get('last_visit_date')
             )
             db.session.add(new_patient)
             db.session.commit()
 
-            flash('Patient added successfully!', 'success')
-            return redirect(url_for('dashboard'))
+            # Render the success confirmation
+            return render_template('add_patient.html', success=True)
 
-        return render_template('add_patient.html')
+        return render_template('add_patient.html', success=False)
     else:
-        flash('Please log in to add patients.', 'danger')
         return redirect(url_for('login'))
+
 # view patient
 @app.route('/patients')
 def view_patients():
