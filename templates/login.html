@@ -61,6 +61,14 @@
     <main class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
         <div class="login-card">
             <h2 class="text-center mb-4">Doctor Login</h2>
+            
+            <!-- Display message if there is an error -->
+            {% if message %}
+            <section class="alert alert-danger text-center" role="alert">
+                {{ message }}
+            </section>
+            {% endif %}
+            
             <form action="{{ url_for('login') }}" method="POST">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
@@ -80,7 +88,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="text-white text-center py-3"id="mainNav">
+    <footer class="text-white text-center py-3" id="mainNav">
         <p class="mb-0">&copy; 2024 EHR Information System. All rights reserved.</p>
     </footer>
 

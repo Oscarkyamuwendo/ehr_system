@@ -72,6 +72,7 @@ def index():
 # Route for login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    message = None  # Initialize message as None by default
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -79,19 +80,21 @@ def login():
         # Fetch the doctor from the database
         doctor = Doctor.query.filter_by(username=username).first()
 
-        # Check if the doctor exists and the password matches
-        if doctor and bcrypt.check_password_hash(doctor.password, password):
-            # Set session details
-            session['loggedin'] = True
-            session['doctor_id'] = doctor.id
-            session['username'] = doctor.username
-            
-            flash('Login successful!', 'success')
-            return redirect(url_for('dashboard'))  # Redirect to the dashboard
+        # Differentiate between unregistered and wrong password cases
+        if doctor:
+            if bcrypt.check_password_hash(doctor.password, password):
+                # Set session details
+                session['loggedin'] = True
+                session['doctor_id'] = doctor.id
+                session['username'] = doctor.username
+                return redirect(url_for('dashboard'))
+            else:
+                message = "Incorrect password or Username. Please try again."
         else:
-            flash('Incorrect username or password', 'danger')
-    
-    return render_template('login.html')
+            message = "No account found with this username. Please register first to continue."
+
+    return render_template('login.html', message=message)
+
 
 
 # Flask-Mail configuration
