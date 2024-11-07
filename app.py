@@ -95,9 +95,9 @@ with app.app_context():
 
 # Configure the upload folder
 UPLOAD_FOLDER = 'static/uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+
+# Ensure the uploads folder exists
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Add patient route
 @app.route('/add_patient', methods=['GET', 'POST'])
