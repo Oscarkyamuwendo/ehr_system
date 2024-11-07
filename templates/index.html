@@ -6,7 +6,7 @@
     <title>ELEHERE Information System</title>
     <!-- Bootstrap CSS and custom theme CSS -->
     <link href="/static/css/styles.css" rel="stylesheet" />
-    <link rel="icon" href="/static/assets/img/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/static/assets/img/elehere-log.jpg" type="image/x-icon" />
     <link rel="stylesheet" href="/static/custom.css">
 
 </head>
@@ -14,17 +14,20 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" >
         <div class="container">
-            <a class="navbar-brand" href="#page-top" style="color:#ffc800; font-family:'Courier New', Courier, monospace;">ELEHERE</a>
+            <a class="navbar-brand" href="#page-top" style="color:#ffc800; font-family:'Courier New', Courier, monospace;">
+                <img src="/static/assets/img/elehere-log.jpg" alt="ELEHERE Logo" style="height: 40px; width: auto; margin-right: 10px;">
+                ELEHERE
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars ms-1"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About Us</a></li>
                 </ul>
             </div>
         </div>
@@ -47,27 +50,23 @@
                 <p>The Electronic Health Record (EHR) system allows doctors to manage patient data such as:</p>
             </div>
             <div class="row text-center">
+                <!-- Demographics Section with Image -->
                 <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fas fa-user-md fa-stack-1x fa-inverse"></i>
-                    </span>
+                    <img src="/static/assets/img/demographics.jpg" class="img-fluid mb-3" alt="Demographics Image" style="max-height: 150px; object-fit: cover;">
                     <h4 class="my-3">Demographics</h4>
                     <p class="text-muted">Record patient age, weight, and personal details.</p>
                 </div>
+                
+                <!-- Medications Section with Image -->
                 <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fas fa-prescription-bottle-alt fa-stack-1x fa-inverse"></i>
-                    </span>
+                    <img src="/static/assets/img/medications.jpg" class="img-fluid mb-3" alt="Medications Image" style="max-height: 150px; object-fit: cover;">
                     <h4 class="my-3">Medications</h4>
                     <p class="text-muted">Track prescribed medications and allergies.</p>
                 </div>
+                
+                <!-- Medical History Section with Image -->
                 <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fas fa-notes-medical fa-stack-1x fa-inverse"></i>
-                    </span>
+                    <img src="/static/assets/img/medical-history.jpg" class="img-fluid mb-3" alt="Medical History Image" style="max-height: 150px; object-fit: cover;">
                     <h4 class="my-3">Medical History</h4>
                     <p class="text-muted">Access medical history and immunization records.</p>
                 </div>

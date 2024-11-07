@@ -368,23 +368,37 @@ def view_patients():
 @app.route('/edit_patient/<int:patient_id>', methods=['GET', 'POST'])
 def edit_patient(patient_id):
     patient = Patient.query.get_or_404(patient_id)
+    success = False  # Success flag for the acknowledgment section
 
     if request.method == 'POST':
+        # Update the patient's information
         patient.name = request.form['name']
         patient.age = request.form['age']
+        patient.weight = request.form['weight']
+        patient.gender = request.form['gender']
         patient.medical_history = request.form['medical_history']
         patient.medication = request.form['medication']
-        patient.allergies = request.form['allergies']
+        patient.vital_signs = request.form['vital_signs']
+        
+        # Convert the list of allergies to a comma-separated string if stored as text in DB
+        patient.allergies = ', '.join(request.form.getlist('allergies'))
+        
         patient.immunization_status = request.form['immunization_status']
         patient.lab_results = request.form['lab_results']
-        patient.radiology_images = request.form['radiology_images']
-        patient.vital_signs = request.form['vital_signs']
-
+        patient.billing_info = request.form['billing_info']
+        patient.last_visit_date = request.form['last_visit_date']
+        
+        # Handle file upload for radiology images if provided
+        radiology_image = request.files.get('radiology_images')
+        if radiology_image:
+            filename = secure_filename(radiology_image.filename)
+            radiology_image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            patient.radiology_images = filename  # Save filename in DB
+        
         db.session.commit()
-        flash('Patient record updated!', 'success')
-        return redirect(url_for('dashboard'))
+        success = True  # Set success flag to display acknowledgment section
 
-    return render_template('edit_patient.html', patient=patient)
+    return render_template('edit_patient.html', patient=patient, success=success)
 
 
 # delete patient

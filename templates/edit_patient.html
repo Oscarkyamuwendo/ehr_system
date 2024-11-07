@@ -6,25 +6,15 @@
     <title>Edit Patient</title>
     <link rel="icon" href="static/images/logo.jpg" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/static/main.css"> <!-- Main styling -->
     <link rel="stylesheet" href="/static/custom.css">
-    <style>
-        /* Confirmation message styling */
-        .confirmation-message {
-            display: none; /* Hidden by default */
-            background-color: #e6ffed;
-            border-left: 6px solid #28a745;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 5px;
-        }
-    </style>
 </head>
 <body>
     <!-- Header -->
     <header class="navbar navbar-expand-lg navbar-dark sticky-top" id="mainNav">
         <div class="container">
             <a class="navbar-brand" href="#" style="color:#ffc800; font-family:'Courier New', Courier, monospace;">
+                <img src="/static/assets/img/elehere-log.jpg" alt="ELEHERE Logo" style="height: 40px; width: auto; margin-right: 10px;">
                 ELEHERE
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,136 +22,139 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="about">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#info">EHR Info</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#info">EHR Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </header>
 
-    <!-- Main Form Section -->
+    <!-- Edit Patient Form -->
     <main class="container my-5">
-        <!-- Confirmation Message Section -->
-        <div id="confirmationMessage" class="confirmation-message text-center">
-            <h4>Patient information updated successfully!</h4>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-primary mt-3">View All Patients</a>
-        </div>
-
-        <!-- Edit Patient Form -->
-        <div class="card shadow p-4">
-            <h2 class="text-center mb-4">Edit Patient Information</h2>
-            <form method="POST" action="{{ url_for('edit_patient', patient_id=patient.id) }}" onsubmit="showConfirmationMessage(event)">
-                <!-- Basic Information -->
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ patient.name }}" required>
+        <!-- Acknowledgment Section (Only visible after successful form submission) -->
+        {% if success %}
+            <div class="alert alert-success text-center mb-4" role="alert">
+                <h4 class="alert-heading">Patient Information Successfully Updated!</h4>
+                <p>Your patient's information has been updated successfully.</p>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary">View Patients</a>
+            </div>
+        {% else %}
+            <!-- Display Form Only If Not Submitted -->
+            <div class="card shadow p-4">
+                <h2 class="text-center mb-4">Edit Patient Information</h2>
+                <form method="POST" action="{{ url_for('edit_patient', patient_id=patient.id) }}">
+                    <!-- Basic Information -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ patient.name }}" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" class="form-control" id="age" name="age" value="{{ patient.age }}" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="weight" class="form-label">Weight (kg)</label>
+                            <input type="number" class="form-control" id="weight" name="weight" value="{{ patient.weight }}">
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="age" class="form-label">Age</label>
-                        <input type="number" class="form-control" id="age" name="age" value="{{ patient.age }}" required>
+
+                    <div class="mb-3">
+                        <label class="form-label">Gender</label>
+                        <select class="form-select" id="gender" name="gender" required>
+                            <option value="Male" {% if patient.gender == 'Male' %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if patient.gender == 'Female' %}selected{% endif %}>Female</option>
+                            <option value="Other" {% if patient.gender == 'Other' %}selected{% endif %}>Other</option>
+                        </select>
                     </div>
-                    <div class="col-md-3">
-                        <label for="weight" class="form-label">Weight (kg)</label>
-                        <input type="number" class="form-control" id="weight" name="weight" value="{{ patient.weight }}">
+
+                    <!-- Medical History -->
+                    <div class="mb-3">
+                        <label for="medical_history" class="form-label">Medical History</label>
+                        <textarea class="form-control" id="medical_history" name="medical_history" rows="3">{{ patient.medical_history }}</textarea>
                     </div>
-                </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Gender</label>
-                    <select class="form-select" id="gender" name="gender" required>
-                        <option value="Male" {% if patient.gender == 'Male' %}selected{% endif %}>Male</option>
-                        <option value="Female" {% if patient.gender == 'Female' %}selected{% endif %}>Female</option>
-                        <option value="Other" {% if patient.gender == 'Other' %}selected{% endif %}>Other</option>
-                    </select>
-                </div>
-
-                <!-- Medical History -->
-                <div class="mb-3">
-                    <label for="medical_history" class="form-label">Medical History</label>
-                    <textarea class="form-control" id="medical_history" name="medical_history" rows="3">{{ patient.medical_history }}</textarea>
-                </div>
-
-                <div class="mb-3">
-                    <label for="medication" class="form-label">Current Medication</label>
-                    <input type="text" class="form-control" id="medication" name="medication" value="{{ patient.medication }}">
-                </div>
-
-                <div class="mb-3">
-                    <label for="vital_signs" class="form-label">Vital Signs</label>
-                    <input type="text" class="form-control" id="vital_signs" name="vital_signs" value="{{ patient.vital_signs }}">
-                </div>
-
-                <!-- Allergies (checkbox) -->
-                <div class="mb-3">
-                    <label class="form-label">Allergies</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="allergy_pollen" name="allergies" value="Pollen" {% if 'Pollen' in patient.allergies %}checked{% endif %}>
-                        <label class="form-check-label" for="allergy_pollen">Pollen</label>
+                    <div class="mb-3">
+                        <label for="medication" class="form-label">Current Medication</label>
+                        <input type="text" class="form-control" id="medication" name="medication" value="{{ patient.medication }}">
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="allergy_dust" name="allergies" value="Dust" {% if 'Dust' in patient.allergies %}checked{% endif %}>
-                        <label class="form-check-label" for="allergy_dust">Dust</label>
+
+                    <div class="mb-3">
+                        <label for="vital_signs" class="form-label">Vital Signs</label>
+                        <input type="text" class="form-control" id="vital_signs" name="vital_signs" value="{{ patient.vital_signs }}">
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="allergy_pet" name="allergies" value="Pet Dander" {% if 'Pet Dander' in patient.allergies %}checked{% endif %}>
-                        <label class="form-check-label" for="allergy_pet">Pet Dander</label>
+
+                    <!-- Allergies (checkbox) -->
+                    <div class="mb-3">
+                        <label class="form-label">Allergies</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="allergy_pollen" name="allergies" value="Pollen" {% if 'Pollen' in patient.allergies %}checked{% endif %}>
+                            <label class="form-check-label" for="allergy_pollen">Pollen</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="allergy_dust" name="allergies" value="Dust" {% if 'Dust' in patient.allergies %}checked{% endif %}>
+                            <label class="form-check-label" for="allergy_dust">Dust</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="allergy_pet" name="allergies" value="Pet Dander" {% if 'Pet Dander' in patient.allergies %}checked{% endif %}>
+                            <label class="form-check-label" for="allergy_pet">Pet Dander</label>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Immunization Status (radio buttons) -->
-                <div class="mb-3">
-                    <label class="form-label">Immunization Status</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="immunization_up_to_date" name="immunization_status" value="Up-to-date" {% if patient.immunization_status == 'Up-to-date' %}checked{% endif %}>
-                        <label class="form-check-label" for="immunization_up_to_date">Up-to-date</label>
+                    <!-- Immunization Status (radio buttons) -->
+                    <div class="mb-3">
+                        <label class="form-label">Immunization Status</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="immunization_up_to_date" name="immunization_status" value="Up-to-date" {% if patient.immunization_status == 'Up-to-date' %}checked{% endif %}>
+                            <label class="form-check-label" for="immunization_up_to_date">Up-to-date</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="immunization_due" name="immunization_status" value="Due" {% if patient.immunization_status == 'Due' %}checked{% endif %}>
+                            <label class="form-check-label" for="immunization_due">Due</label>
+                        </div>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="immunization_due" name="immunization_status" value="Due" {% if patient.immunization_status == 'Due' %}checked{% endif %}>
-                        <label class="form-check-label" for="immunization_due">Due</label>
+
+                    <!-- Lab Results -->
+                    <div class="mb-3">
+                        <label for="lab_results" class="form-label">Lab Results</label>
+                        <textarea class="form-control" id="lab_results" name="lab_results" rows="3">{{ patient.lab_results }}</textarea>
                     </div>
-                </div>
 
-                <!-- Lab Results -->
-                <div class="mb-3">
-                    <label for="lab_results" class="form-label">Lab Results</label>
-                    <textarea class="form-control" id="lab_results" name="lab_results" rows="3">{{ patient.lab_results }}</textarea>
-                </div>
+                    <!-- Radiology Images (file upload) -->
+                    <div class="mb-3">
+                        <label for="radiology_images" class="form-label">Radiology Images</label>
+                        <input class="form-control" type="file" id="radiology_images" name="radiology_images">
+                    </div>
 
-                <!-- Radiology Images (file upload) -->
-                <div class="mb-3">
-                    <label for="radiology_images" class="form-label">Radiology Images</label>
-                    <input class="form-control" type="file" id="radiology_images" name="radiology_images">
-                </div>
+                    <!-- Billing Info and Last Visit Date -->
+                    <div class="mb-3">
+                        <label for="billing_info" class="form-label">Billing Information</label>
+                        <textarea class="form-control" id="billing_info" name="billing_info" rows="3">{{ patient.billing_info }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_visit_date" class="form-label">Last Visit Date</label>
+                        <input type="date" class="form-control" id="last_visit_date" name="last_visit_date" value="{{ patient.last_visit_date }}">
+                    </div>
 
-                <!-- Billing Info and Last Visit Date -->
-                <div class="mb-3">
-                    <label for="billing_info" class="form-label">Billing Information</label>
-                    <textarea class="form-control" id="billing_info" name="billing_info" rows="3">{{ patient.billing_info }}</textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="last_visit_date" class="form-label">Last Visit Date</label>
-                    <input type="date" class="form-control" id="last_visit_date" name="last_visit_date" value="{{ patient.last_visit_date }}">
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary w-100">Update Patient</button>
-            </form>
-        </div>
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary w-100">Update Patient</button>
+                </form>
+            </div>
+        {% endif %}
     </main>
 
-    <footer class=" text-white text-center py-3">
+    <footer class="bg-dark text-white text-center py-3">
         <p class="mb-0">&copy; 2024 EHR Information System. All rights reserved.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Display the confirmation message on form submission
-        function showConfirmationMessage(event) {
-            event.preventDefault(); // Prevent form submission to backend for demo
-            document.getElementById('confirmationMessage').style.display = 'block';
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
