@@ -1,0 +1,143 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body styling */
+body {
+    background-color: beige;
+    color: #333;
+}
+
+/* Header styling */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #042e1b;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(2, 95, 54, 0.1);
+}
+
+.header img {
+    height: 50px;
+    width: 80px;
+    height: auto;
+    margin-right: 20px;
+}
+}
+
+.header h1 {
+    font-size: 1.8rem;
+    margin-left: 10px;
+}
+
+.navigation-area a {
+    color: #fff;
+    margin-left: 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navigation-area a:hover {
+    text-decoration: underline;
+}
+
+/* Main container */
+main {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+main h1 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+main h2 {
+    color: rgb(4, 53, 31);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #074119;
+    color: white;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Action button styling */
+a, button {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+button:hover, a:hover {
+    color: #0056b3;
+}
+
+/* Add Patient button */
+.add-patient-link {
+    display: inline-block;
+    margin: 1rem 0;
+    padding: 10px 20px;
+    color: white;
+    background-color: #28a745;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.add-patient-link:hover {
+    background-color: #218838;
+}
+
+/* Footer styling */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #042e1b;
+    color: white;
+    margin-top: 2rem;
+    box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1);
+}
