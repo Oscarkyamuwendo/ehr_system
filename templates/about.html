@@ -3,34 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EHR Info</title>
-    <link rel="icon" href="static/images/logo.jpg" type="text/x-icon" />
-    <link rel="stylesheet" href="static/main.css">
+    <title>About Us | ELEHERE</title>
+    <link href="/static/css/styles.css" rel="stylesheet" />
+    <link rel="icon" href="/static/assets/img/elehere-log.jpg" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/custom.css">
+    <style>
+        /* Enhanced About Section */
+        #about-section {
+            background-color: #f8f9fa;
+            padding: 60px 20px;
+            border-radius: 10px;
+        }
+        #about-section h2 {
+            font-family: 'Courier New', Courier, monospace;
+            color: #ff0019;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        /* Feature Box Styling */
+        .feature-box-wrapper {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .feature-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .feature-box {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            height: 250px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .feature-box:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        .feature-box:hover .feature-details {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .feature-details {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease-in-out;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+        }
+        footer a {
+            color: #ffc800;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        footer a:hover {
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-    <header class="header">
-        <div class="school-budge-area">
-            <img src="static/images/logo.png" class="school-budge" alt="EHR Logo" />
-            <h1 class="school-name">EHR Information System</h1>
+    <!-- Navbar -->
+    <header class="navbar navbar-expand-lg navbar-dark sticky-top" id="mainNav">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/" style="color:#ffc800; font-family:'Courier New', Courier, monospace;">
+                <img src="/static/assets/img/elehere-log.jpg" alt="ELEHERE Logo" style="height: 40px; width: auto; margin-right: 10px;">
+                ELEHERE
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#info">EHR Info</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
+                </ul>
+            </div>
         </div>
-        <nav class="navigation-area">
-            <a href="login">Login</a>
-            <a href="register">Doctor Registration</a>
-            <a href="#info">EHR Info</a>
-        </nav>
     </header>
 
-    <main>
-        <section id="about">
-            <h2>About Us</h2>
-            <p>This EHR Information System is designed to help doctors manage patient records efficiently. It allows doctors to access patient information securely and perform CRUD operations.</p>
-        </section>
-
+    <!-- About Section -->
+    <main class="container my-5">
         
+        <section id="about-section">
+            <h2>About ELEHERE</h2>
+            <div class="row g-4">
+                <!-- Feature boxes with titles outside and hover effect -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-box-wrapper">
+                        <div class="feature-title">Comprehensive Patient Management</div>
+                        <div class="feature-box" style="background-image: url('/static/assets/img/patient-management.jpg');">
+                            <div class="feature-details">
+                                <p>Easily manage patient records with features for adding, viewing, editing, and deleting patient information.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-box-wrapper">
+                        <div class="feature-title">Secure and Private</div>
+                        <div class="feature-box" style="background-image: url('/static/assets/img/secure-data.jpg');">
+                            <div class="feature-details">
+                                <p>Data security is our priority. We ensure patient records are stored securely and are accessible only to authorized users.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-box-wrapper">
+                        <div class="feature-title">Efficient Workflow</div>
+                        <div class="feature-box" style="background-image: url('/static/assets/img/workflow-efficiency.jpg');">
+                            <div class="feature-details">
+                                <p>Our EHR system saves time, letting providers focus on patient care rather than administrative tasks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer>
-        <p>&copy; 2024 EHR Information System. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="text-center">
+        <p>&copy; 2024 ELEHERE EHR Information System. All rights reserved.</p>
     </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 </body>
 </html>

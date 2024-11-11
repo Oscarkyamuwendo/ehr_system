@@ -410,6 +410,12 @@ def delete_patient(patient_id):
     flash('Patient record deleted!', 'success')
     return redirect(url_for('view_patients'))
 
+# about
+@app.route('/about')
+def about():
+
+    return render_template('about.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
