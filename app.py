@@ -280,7 +280,7 @@ def logout():
     session.pop('doctor_id', None)
     session.pop('username', None)
     flash('You have been logged out', 'success')
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
 
 # patient model
 class Patient(db.Model):
