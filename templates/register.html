@@ -111,6 +111,22 @@
                 </form>
             {% endif %}
         </div>
+                <!-- Modal for displaying messages -->
+        <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmationModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="confirmationModalBody"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Footer -->
@@ -193,5 +209,28 @@
             }
         }
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalTitle = document.getElementById('confirmationModalLabel');
+        const modalBody = document.getElementById('confirmationModalBody');
+        const modalElement = document.getElementById('confirmationModal');
+
+        // These variables are passed from Flask
+        const message = "{{ message }}";
+        const title = "{{ title }}";
+
+        if (message && title) {
+            // Set modal content
+            modalTitle.textContent = title;
+            modalBody.textContent = message;
+
+            // Show the modal
+            const bootstrapModal = new bootstrap.Modal(modalElement);
+            bootstrapModal.show();
+        }
+    });
+</script>
+
 </body>
 </html>

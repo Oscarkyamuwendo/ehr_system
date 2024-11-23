@@ -46,43 +46,97 @@
     <section class="page-section" id="services">
         <div class="container">
             <div class="text-center">
-                <h2 class="section-heading text-uppercase">EHR Information</h2>
-                <p>The Electronic Health Record (EHR) system allows doctors to manage patient data such as:</p>
+                <h2 class="section-heading text-uppercase">SERVICES</h2>
+                <p class="section-subheading text-muted">Explore the powerful features our EHR system offers:</p>
             </div>
-            <div class="row text-center">
-                <!-- Demographics Section with Image -->
-                <div class="col-md-4">
-                    <img src="/static/assets/img/demographics.jpg" class="img-fluid mb-3" alt="Demographics Image" style="max-height: 150px; object-fit: cover;">
-                    <h4 class="my-3">Demographics</h4>
-                    <p class="text-muted">Record patient age, weight, and personal details.</p>
+            <div class="row">
+                <!-- Demographics Section -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="/static/assets/img/demographics.jpg" class="card-img-top" alt="Demographics">
+                        <div class="card-body">
+                            <h5 class="card-title">Demographics</h5>
+                            <p class="card-text text-muted short-text">
+                                Keep track of patient age, weight, gender, and other essential personal details.
+                            </p>
+                            <p class="card-text text-muted full-text d-none">
+                                Keep track of patient age, weight, gender, and other essential personal details.
+                                Accurately tracking patient demographics is essential in providing personalized healthcare and optimizing treatment outcomes. 
+                                Key details such as age, weight, gender, and medical history offer critical insights into each patient's unique needs. 
+                                In addition to these foundational metrics, other essential personal details—like ethnicity, contact information, address,
+                                 and emergency contacts—help establish a complete profile. Lifestyle factors, including smoking status, alcohol use, 
+                                 and physical activity level, can further enhance understanding of risk factors and guide preventive care recommendations. 
+                                 By gathering comprehensive demographic data, healthcare providers can improve care coordination, support targeted treatments,
+                                 and ensure each patient receives holistic, patient-centered care tailored to their background and lifestyle.
+                            </p>
+                            <a href="#" class="read-more-link" onclick="toggleText(event)">Read More</a>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Medications Section with Image -->
-                <div class="col-md-4">
-                    <img src="/static/assets/img/medications.jpg" class="img-fluid mb-3" alt="Medications Image" style="max-height: 150px; object-fit: cover;">
-                    <h4 class="my-3">Medications</h4>
-                    <p class="text-muted">Track prescribed medications and allergies.</p>
+    
+                <!-- Medications Section -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="/static/assets/img/medications.jpg" class="card-img-top" alt="Medications">
+                        <div class="card-body">
+                            <h5 class="card-title">Medications</h5>
+                            <p class="card-text text-muted short-text">
+                                Effective medication management is vital to ensure patient safety, treatment efficacy...
+                            </p>
+                            <p class="card-text text-muted full-text d-none">
+                                Effective medication management is vital to ensure patient safety, treatment efficacy, and quality of care.
+                                 By closely monitoring prescribed medications—including dosage, frequency,
+                                  and route of administration—healthcare providers can help prevent adverse interactions and enhance treatment outcomes. 
+                                  Recording any known allergies, intolerances, or previous adverse reactions allows for tailored medication choices that minimize risks. 
+                                  Additionally, documenting over-the-counter medications, supplements, 
+                                  and herbal products helps create a full picture of each patient’s pharmacological profile, reducing the chances of drug interactions. 
+                                  Medication management also includes tracking refill schedules, reviewing adherence to prescriptions, 
+                                  and educating patients on proper usage to empower them in their own health management. 
+                                  This comprehensive approach ensures that all aspects of a patient's medication history are integrated into their care plan for optimal,
+                                   individualized treatment.
+                            </p>
+                            <a href="#" class="read-more-link" onclick="toggleText(event)">Read More</a>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Medical History Section with Image -->
-                <div class="col-md-4">
-                    <img src="/static/assets/img/medical-history.jpg" class="img-fluid mb-3" alt="Medical History Image" style="max-height: 150px; object-fit: cover;">
-                    <h4 class="my-3">Medical History</h4>
-                    <p class="text-muted">Access medical history and immunization records.</p>
+    
+                <!-- Medical History Section -->
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="/static/assets/img/medical-history.jpg" class="card-img-top" alt="Medical History">
+                        <div class="card-body">
+                            <h5 class="card-title">Medical History</h5>
+                            <p class="card-text text-muted short-text">
+                                Access comprehensive medical history including previous diagnoses and treatments...
+                            </p>
+                            <p class="card-text text-muted full-text d-none">
+                                Comprehensive Medical History ,Maintaining an accessible and thorough medical history is fundamental to delivering high-quality, 
+                                informed healthcare. A comprehensive record includes previous diagnoses, treatments, and immunization records,
+                                 allowing healthcare providers to understand a patient's background and identify potential risk factors.
+                                  In addition to these core details, documenting past surgeries, hospitalizations, 
+                                  and family medical history provides deeper insights into hereditary conditions and potential predispositions. 
+                                  Tracking chronic conditions, previous therapies, and any recurring symptoms helps to inform ongoing care decisions, 
+                                  minimize redundant tests, and identify patterns that may affect a patient's current and future health.
+                                   This rich history also aids in preventive care planning, ensuring patients receive timely screenings and vaccinations, 
+                                   and supports seamless coordination between providers, fostering a holistic, patient-centered approach to care.
+                            </p>
+                            <a href="#" class="read-more-link" onclick="toggleText(event)">Read More</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-
+    
     <!-- Footer-->
     <footer class="footer py-4">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-4 text-lg-start">© 2024 EHR Information System</div>
                 <div class="col-lg-4 my-3 my-lg-0">
-                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="https://x.com/OscarKyamuwendo"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="https://www.facebook.com/kyamuwendo.oscar/"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="https://www.linkedin.com/in/oscar-kyamuwendo-2631b82b0/"><i class="fab fa-linkedin-in"></i></a>
                 </div>
                 <div class="col-lg-4 text-lg-end">
                     <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
@@ -95,5 +149,25 @@
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script>
+        function toggleText(event) {
+            event.preventDefault();
+            const cardBody = event.target.closest('.card-body');
+            const shortText = cardBody.querySelector('.short-text');
+            const fullText = cardBody.querySelector('.full-text');
+            const readMoreLink = cardBody.querySelector('.read-more-link');
+    
+            if (fullText.classList.contains('d-none')) {
+                fullText.classList.remove('d-none');
+                shortText.classList.add('d-none');
+                readMoreLink.textContent = "Read Less";
+            } else {
+                fullText.classList.add('d-none');
+                shortText.classList.remove('d-none');
+                readMoreLink.textContent = "Read More";
+            }
+        }
+    </script>
+    
 </body>
 </html>

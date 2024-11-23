@@ -38,4 +38,10 @@ a.nav-link:hover {
     margin-bottom: 20px;
 }
 
+/* Body styling */
+body {
+    background-color: rgb(239, 239, 222);
+    color: #333;
+}
+
 

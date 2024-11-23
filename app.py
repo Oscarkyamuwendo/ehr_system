@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 import os
 import urllib.parse as up
 
+
 import pymysql
 from flask_migrate import Migrate
 
@@ -18,15 +19,16 @@ pymysql.install_as_MySQLdb()
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
-# Secret key and email credentials should be environment variables (for security)
-app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your_default_secret_key')  # Add default for development
+ # Secret key and email credentials should be environment variables (for security)
+'''app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your_default_secret_key')  # Add default for development
 app.config.update(
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=587,
+    MAIL_SERVER='smtp.mail.yahoo.com',
+    MAIL_PORT=465,
     MAIL_USE_TLS=True,
-    MAIL_USERNAME=os.environ.get('MAIL_USERNAME', 'oscarkyamuwendo@gmail.com'),
-    MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD', 'JESUS44ME')
-)
+    MAIL_USERNAME=os.environ.get('MAIL_USERNAME', 'oscarkyamuweno@yahoo.com'),
+    MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD', 'Godjesus44me.')
+) '''
+
 
 # Get the JawsDB URL from the environment variable
 url = os.environ.get('JAWSDB_URL')
@@ -59,8 +61,9 @@ class Doctor(db.Model):
     username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
+    confirmed = db.Column(db.Boolean, default=False)
 
-# Create the MySQL database tables (if they don't exist)
+# Creates the MySQL database tables (if they don't exist)
 with app.app_context():
     db.create_all()
 
@@ -72,85 +75,90 @@ def index():
 # Route for login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    message = None  # Initialize message as None by default
+    message = None
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        
-        # Fetch the doctor from the database
         doctor = Doctor.query.filter_by(username=username).first()
 
-        # Differentiate between unregistered and wrong password cases
         if doctor:
+            #if not doctor.confirmed:
+                #message = "Please confirm your email before logging in."
             if bcrypt.check_password_hash(doctor.password, password):
-                # Set session details
                 session['loggedin'] = True
                 session['doctor_id'] = doctor.id
                 session['username'] = doctor.username
                 return redirect(url_for('dashboard'))
             else:
-                message = "Incorrect password or Username. Please try again."
+                message = "Incorrect password. Please try again."
         else:
-            message = "No account found with this username. Please register first to continue."
+            message = "No account found with this username. Please register first."
 
     return render_template('login.html', message=message)
 
 
 
 # Flask-Mail configuration
-app.config.update(
-    MAIL_SERVER='smtp.gmail.com',
-    MAIL_PORT=587,
-    MAIL_USE_TLS=True,
-    MAIL_USERNAME='oscarkyamuwendo@gmail.com',
-    MAIL_PASSWORD='JESUS44ME',
-)
+app.config['MAIL_SERVER'] = 'smtp.mail.yahoo.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USERNAME'] = 'oscarkyamuwendo@yahoo.com'
+app.config['MAIL_PASSWORD'] = 'vdvifzmtxjyigmse'
+
 mail = Mail(app)
 serializer = URLSafeTimedSerializer(app.secret_key)
 
-#function to send the confirmation email
 
-def send_confirmation_email(user_email):
-    token = serializer.dumps(user_email, salt='email-confirmation-salt')
-    confirm_url = url_for('confirm_email', token=token, _external=True)
-    html = render_template('email_confirmation.html', confirm_url=confirm_url)
-    msg = Message('Confirm Your Email', recipients=[user_email], html=html)
-    mail.send(msg)
+# Set up token serializer
+def generate_confirmation_token(email):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
 
-# route to handle email confirmation
-@app.route('/confirm/<token>')
-def confirm_email(token):
+def confirm_token(token, expiration=3600):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     try:
-        email = serializer.loads(token, salt='email-confirmation-salt', max_age=3600)  # 1-hour expiration
-        # Mark user as confirmed in the database here
-        flash('Your email has been confirmed!', 'success')
-    except Exception:
-        flash('The confirmation link is invalid or has expired.', 'danger')
-    return redirect(url_for('login'))
+        email = serializer.loads(token, salt=app.config['SECURITY_PASSWORD_SALT'], max_age=expiration)
+    except:
+        return False
+    return email
+
+
 
 # Forgot password configuration
 @app.route('/forgot_password', methods=['GET', 'POST'])
 def forgot_password():
     if request.method == 'POST':
         email = request.form['email']
-        doctor = Doctor.query.filter_by(email=email).first()
+        user = Doctor.query.filter_by(email=email).first()  # Check if user exists
 
-        if doctor:
-            # Generate a reset token (this can be done using itsdangerous or JWT)
-            token = generate_reset_token(doctor.id)  # You will create this function
-            send_reset_email(doctor.email, token)    # You will create this function
+        if user:
+            # Generate a secure token for password reset
+            token = generate_password_reset_token(user.id)
+            reset_url = url_for('reset_password', token=token, _external=True)
 
-            flash('A password reset email has been sent.', 'info')
+            # Send reset email
+            msg = Message("Password Reset Request",
+                          sender= ("Elehere Support","oscarkyamuwendo@yahoo.com"),
+                          recipients=[email])
+            msg.body = f"To reset your password, visit the following link: {reset_url}"
+            mail.send(msg)
+            
+            flash("A password reset link has been sent to your email.", "success")
             return redirect(url_for('login'))
         else:
-            flash('Email does not exist!', 'danger')
-    
+            flash("Email not found. Please check and try again.", "danger")
+            return redirect(url_for('forgot_password'))
+
+                                        # Render the forgot_password form on a GET request
     return render_template('forgot_password.html')
 
+
 # Function to generate reset token
-def generate_reset_token(doctor_id):
-    s = URLSafeTimedSerializer(app.secret_key)
-    return s.dumps(doctor_id, salt='password-reset-salt')
+def generate_password_reset_token(user_id):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    return serializer.dumps(user_id, salt='password-reset-salt')
+
 
 # Function to verify the reset token
 def verify_reset_token(token, expiration=3600):  # Expiration time is 1 hour (3600 seconds)
@@ -165,7 +173,7 @@ def verify_reset_token(token, expiration=3600):  # Expiration time is 1 hour (36
 def send_reset_email(email, token):
     reset_url = url_for('reset_password', token=token, _external=True)
     msg = Message('Password Reset Request', 
-                  sender='your-email@gmail.com',  # Replace with your sender email
+                  sender= ("Elehere Support","oscarkyamuwendo@yahoo.com"),  # Replace with your sender email
                   recipients=[email])
     msg.body = f'''To reset your password, visit the following link:
 {reset_url}
@@ -206,36 +214,65 @@ def reset_password(token):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        # Ensure all fields are present
-        if 'reg-username' in request.form and 'reg-password' in request.form and 'email' in request.form:
-            username = request.form['reg-username']
-            password = request.form['reg-password']
-            confirm_password = request.form['confirm-password']
-            email = request.form['email']
+        username = request.form['reg-username']
+        password = request.form['reg-password']
+        confirm_password = request.form['confirm-password']
+        email = request.form['email']
 
-            # Check if passwords match
-            if password != confirm_password:
-                return render_template('doctor_registration.html', success=False, error="Passwords do not match!")
-            
-            # Check if the username or email already exists
-            if Doctor.query.filter_by(username=username).first() or Doctor.query.filter_by(email=email).first():
-                return render_template('doctor_registration.html', success=False, error="Username or Email already exists!")
-            
-            # Password hashing
-            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        if password != confirm_password:
+            return render_template(
+                'register.html',
+                title="Error",
+                message="Passwords do not match! Please try again."
+            )
 
-            # Insert into the database
-            new_doctor = Doctor(username=username, email=email, password=hashed_password)
-            db.session.add(new_doctor)
-            db.session.commit()
+        if Doctor.query.filter_by(username=username).first() or Doctor.query.filter_by(email=email).first():
+            return render_template(
+                'register.html',
+                title="Error",
+                message="Username or Email already exists! Please use another or log in."
+            )
 
-            # Return success message after registration
-            return render_template('register.html', success=True)
-        else:
-            return render_template('register.html', success=False, error="Please fill out all fields.")
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        new_doctor = Doctor(username=username, email=email, password=hashed_password, confirmed=False)
+        db.session.add(new_doctor)
+        db.session.commit()
+
+        # Generate confirmation token and send email
+        token = serializer.dumps(email, salt='email-confirmation-salt')
+        confirm_url = url_for('confirm_email', token=token, _external=True)
+        msg = Message('Confirm Your Account', 
+                      sender=("Elehere Support", "oscarkyamuwendo@yahoo.com"),
+                      recipients=[email])
+        msg.body = f"Click the link to confirm your account: {confirm_url}"
+        mail.send(msg)
+
+        # Return modal data
+        return render_template(
+            'register.html',
+            title="Registration Successful",
+            message="Registration successful! Please check your email for the activation link."
+        )
+
+    return render_template('register.html')
+
+
+
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = serializer.loads(token, salt='email-confirmation-salt', max_age=3600)
+    except:
+        return render_template('activation_failed.html', message="The confirmation link is invalid or has expired.")
+
+    doctor = Doctor.query.filter_by(email=email).first_or_404()
+    if doctor.confirmed:
+        return render_template('activation_success.html', message="Your account is already confirmed. Please log in.")
     
-    # Render the registration form if GET request
-    return render_template('register.html', success=False)
+    doctor.confirmed = True
+    db.session.commit()
+    return render_template('activation_success.html', message="Your account has been activated! You may now log in.")
+
 
 
 @app.route('/doctors')
@@ -317,6 +354,8 @@ with app.app_context():
 
 # Configure the upload folder
 UPLOAD_FOLDER = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+
 
 # Ensure the uploads folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -368,35 +407,45 @@ def view_patients():
 @app.route('/edit_patient/<int:patient_id>', methods=['GET', 'POST'])
 def edit_patient(patient_id):
     patient = Patient.query.get_or_404(patient_id)
-    success = False  # Success flag for the acknowledgment section
+    success = False  # Flag for displaying acknowledgment
 
     if request.method == 'POST':
-        # Update the patient's information
-        patient.name = request.form['name']
-        patient.age = request.form['age']
-        patient.weight = request.form['weight']
-        patient.gender = request.form['gender']
-        patient.medical_history = request.form['medical_history']
-        patient.medication = request.form['medication']
-        patient.vital_signs = request.form['vital_signs']
-        
-        # Convert the list of allergies to a comma-separated string if stored as text in DB
-        patient.allergies = ', '.join(request.form.getlist('allergies'))
-        
-        patient.immunization_status = request.form['immunization_status']
-        patient.lab_results = request.form['lab_results']
-        patient.billing_info = request.form['billing_info']
-        patient.last_visit_date = request.form['last_visit_date']
-        
-        # Handle file upload for radiology images if provided
-        radiology_image = request.files.get('radiology_images')
-        if radiology_image:
-            filename = secure_filename(radiology_image.filename)
-            radiology_image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            patient.radiology_images = filename  # Save filename in DB
-        
-        db.session.commit()
-        success = True  # Set success flag to display acknowledgment section
+        try:
+            # Update patient details from the form
+            patient.name = request.form['name']
+            patient.age = int(request.form['age'])
+            patient.weight = float(request.form['weight'])
+            patient.gender = request.form['gender']
+            patient.medical_history = request.form['medical_history']
+            patient.medication = request.form['medication']
+
+            # Convert list of allergies to a comma-separated string
+            patient.allergies = ', '.join(request.form.getlist('allergies'))
+
+            # Optional fields with defaults
+            patient.immunization_status = request.form.get('immunization_status', 'Not Provided')
+            patient.lab_results = request.form.get('lab_results', '')
+            patient.billing_info = request.form.get('billing_info', '')
+
+            # Validate and update last visit date
+            patient.last_visit_date = request.form['last_visit_date'] if request.form['last_visit_date'] else None
+
+            # Handle radiology image upload
+            radiology_image = request.files.get('radiology_images')
+            if radiology_image and radiology_image.filename != '':
+                filename = secure_filename(radiology_image.filename)
+                upload_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                radiology_image.save(upload_path)
+                patient.radiology_images = filename  # Save filename in the database
+
+            # Commit changes to the database
+            db.session.commit()
+            success = True
+        except Exception as e:
+            # Handle any errors gracefully
+            db.session.rollback()
+            error_message = f"An error occurred while updating the patient's information: {str(e)}"
+            return render_template('edit_patient.html', patient=patient, success=False, error=error_message)
 
     return render_template('edit_patient.html', patient=patient, success=success)
 
