@@ -365,6 +365,16 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 def add_patient():
     if 'loggedin' in session:
         if request.method == 'POST':
+            # Handle file upload for radiology image
+            radiology_image = request.files.get('radiology_images')
+            radiology_image_filename = None  # Default to None if no image is uploaded
+            
+            if radiology_image and radiology_image.filename != '':
+                filename = secure_filename(radiology_image.filename)
+                upload_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                radiology_image.save(upload_path)
+                radiology_image_filename = filename  # Store the filename to save in the database
+            
             # Patient data processing here
             new_patient = Patient(
                 doctor_id=session['doctor_id'],
@@ -377,7 +387,7 @@ def add_patient():
                 allergies=request.form.getlist('allergies'),
                 immunization_status=request.form.get('immunization_status'),
                 lab_results=request.form.get('lab_results'),
-                radiology_images=request.form.get('radiology_images'),
+                radiology_images=radiology_image_filename,  # Save filename of the uploaded image
                 vital_signs=request.form.get('vital_signs'),
                 billing_info=request.form.get('billing_info'),
                 last_visit_date=request.form.get('last_visit_date')
@@ -391,6 +401,7 @@ def add_patient():
         return render_template('add_patient.html', success=False)
     else:
         return redirect(url_for('login'))
+
 
 # view patient
 @app.route('/patients')
