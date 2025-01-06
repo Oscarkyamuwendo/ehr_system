@@ -11,11 +11,11 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="navbar navbar-expand-lg navbar-dark sticky-top bg-dark" id="mainNav">
+    <header class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm", id="mainNav">
         <div class="container">
-            <a class="navbar-brand" href="#" style="color:#ffc800; font-family:'Courier New', Courier, monospace;">
-                <img src="/static/assets/img/elehere-log.jpg" alt="ELEHERE Logo" style="height: 40px; width: auto; margin-right: 10px;">
-                ELEHERE
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="/static/assets/img/elehere-log.jpg" alt="ELEHERE Logo" class="me-2" style="height: 40px;">
+                <span style="color:#ffc800; font-family:'Courier New', Courier, monospace;">ELEHERE</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -24,8 +24,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="dashboard">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#info">EHR Info</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -33,96 +32,107 @@
 
     <!-- Main Content -->
     <main class="container my-5">
-        <!-- Acknowledgment Section -->
+        <!-- Success Section -->
         {% if success %}
-            <div class="alert alert-success text-center mb-4" role="alert">
-                <h4 class="alert-heading">Patient Information Successfully Updated!</h4>
-                <p>Your patient's information has been updated successfully.</p>
-                <a href="{{ url_for('dashboard') }}" class="btn btn-primary">View Patients</a>
+            <div class="alert alert-success text-center shadow-sm py-4" role="alert">
+                <h4 class="alert-heading">Patient Information Updated!</h4>
+                <p>Your patient's information has been successfully updated.</p>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary mt-3">View Patients</a>
             </div>
         {% else %}
             <!-- Form Section -->
             {% if error %}
-                <div class="alert alert-danger text-center mb-4" role="alert">
+                <div class="alert alert-danger text-center shadow-sm mb-4" role="alert">
                     {{ error }}
                 </div>
             {% endif %}
-            <div class="card shadow p-4">
-                <h2 class="text-center mb-4">Edit Patient Information</h2>
+            <div class="card shadow-sm p-4">
+                <h2 class="text-center mb-4">Edit Patient's Records</h2>
                 <form method="POST" action="{{ url_for('edit_patient', patient_id=patient.id) }}" enctype="multipart/form-data">
                     <!-- Basic Information -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ patient.name }}" required>
+                    <div class="border p-3 mb-4">
+                        <h5 class="text-primary">Basic Information</h5>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" name="name" value="{{ patient.name }}" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" name="age" value="{{ patient.age }}" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="weight" class="form-label">Weight (kg)</label>
+                                <input type="number" class="form-control" id="weight" name="weight" value="{{ patient.weight or '' }}" min="0" step="0.1" required>
+                            </div>
                         </div>
-                        <div class="col-md-3">
-                            <label for="age" class="form-label">Age</label>
-                            <input type="number" class="form-control" id="age" name="age" value="{{ patient.age }}" required>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="weight" class="form-label">Weight (kg)</label>
-                            <input type="number" class="form-control" id="weight" name="weight" value="{{ patient.weight or '' }}" min="0" step="0.1" required>
+
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-select" id="gender" name="gender" required>
+                                <option value="Male" {% if patient.gender == 'Male' %}selected{% endif %}>Male</option>
+                                <option value="Female" {% if patient.gender == 'Female' %}selected{% endif %}>Female</option>
+                                <option value="Other" {% if patient.gender == 'Other' %}selected{% endif %}>Other</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Gender</label>
-                        <select class="form-select" id="gender" name="gender" required>
-                            <option value="Male" {% if patient.gender == 'Male' %}selected{% endif %}>Male</option>
-                            <option value="Female" {% if patient.gender == 'Female' %}selected{% endif %}>Female</option>
-                            <option value="Other" {% if patient.gender == 'Other' %}selected{% endif %}>Other</option>
-                        </select>
-                    </div>
-
-                    <!-- Medical Information -->
-                    <div class="mb-3">
-                        <label for="medical_history" class="form-label">Medical History</label>
-                        <textarea class="form-control" id="medical_history" name="medical_history" rows="3">{{ patient.medical_history }}</textarea>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="medication" class="form-label">Current Medication</label>
-                        <input type="text" class="form-control" id="medication" name="medication" value="{{ patient.medication }}">
+                    <!-- Medical Details -->
+                    <div class="border p-3 mb-4">
+                        <h5 class="text-primary">Medical Details</h5>
+                        <div class="mb-3">
+                            <label for="medical_history" class="form-label">Medical History</label>
+                            <textarea class="form-control" id="medical_history" name="medical_history" rows="3">{{ patient.medical_history }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="medication" class="form-label">Current Medication</label>
+                            <input type="text" class="form-control" id="medication" name="medication" value="{{ patient.medication }}">
+                        </div>
                     </div>
 
                     <!-- Allergies -->
-                    <div class="mb-3">
-                        <label class="form-label">Allergies</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="allergy_pollen" name="allergies" value="Pollen" {% if 'Pollen' in patient.allergies %}checked{% endif %}>
-                            <label class="form-check-label" for="allergy_pollen">Pollen</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="allergy_dust" name="allergies" value="Dust" {% if 'Dust' in patient.allergies %}checked{% endif %}>
-                            <label class="form-check-label" for="allergy_dust">Dust</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="allergy_pet" name="allergies" value="Pet Dander" {% if 'Pet Dander' in patient.allergies %}checked{% endif %}>
-                            <label class="form-check-label" for="allergy_pet">Pet Dander</label>
+                    <div class="border p-3 mb-4">
+                        <h5 class="text-primary">Allergies</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Known Allergies</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="allergy_pollen" name="allergies" value="Pollen" {% if 'Pollen' in patient.allergies %}checked{% endif %}>
+                                <label class="form-check-label" for="allergy_pollen">Pollen</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="allergy_dust" name="allergies" value="Dust" {% if 'Dust' in patient.allergies %}checked{% endif %}>
+                                <label class="form-check-label" for="allergy_dust">Dust</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="allergy_pet" name="allergies" value="Pet Dander" {% if 'Pet Dander' in patient.allergies %}checked{% endif %}>
+                                <label class="form-check-label" for="allergy_pet">Pet Dander</label>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Radiology Images -->
-                    <div class="mb-3">
+                    <div class="border p-3 mb-4">
                         <label for="radiology_images" class="form-label">Radiology Images</label>
                         <input class="form-control" type="file" id="radiology_images" name="radiology_images" accept="image/*">
                     </div>
 
                     <!-- Last Visit -->
-                    <div class="mb-3">
-                        <label for="last_visit_date" class="form-label">Last Visit Date</label>
-                        <input type="date" class="form-control" id="last_visit_date" name="last_visit_date" value="{{ patient.last_visit_date }}">
+                    <div class="border p-3 mb-4">
+                        <div class="mb-3">
+                            <label for="last_visit_date" class="form-label">Last Visit Date</label>
+                            <input type="date" class="form-control" id="last_visit_date" name="last_visit_date" value="{{ patient.last_visit_date }}">
+                        </div>
                     </div>
 
-                    <!-- Submit -->
+                    <!-- Submit Button -->
                     <button type="submit" class="btn btn-primary w-100">Update Patient</button>
                 </form>
             </div>
         {% endif %}
     </main>
 
-    <footer class="bg-dark text-white text-center py-3">
+    <!-- Footer -->
+    <footer class="text-white text-center py-3 mt-auto", id="mainNav">
         <p class="mb-0">&copy; 2024 EHR Information System. All rights reserved.</p>
     </footer>
 
@@ -137,7 +147,7 @@
                 <div class="modal-body">Are you sure you want to log out?</div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+                    <a href="/logout" class="btn btn-danger">Logout</a>
                 </div>
             </div>
         </div>

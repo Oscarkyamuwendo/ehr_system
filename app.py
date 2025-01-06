@@ -20,14 +20,14 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
  # Secret key and email credentials should be environment variables (for security)
-'''app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your_default_secret_key')  # Add default for development
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your_default_secret_key')  # Add default for development
 app.config.update(
     MAIL_SERVER='smtp.mail.yahoo.com',
     MAIL_PORT=465,
     MAIL_USE_TLS=True,
     MAIL_USERNAME=os.environ.get('MAIL_USERNAME', 'oscarkyamuweno@yahoo.com'),
     MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD', 'Godjesus44me.')
-) '''
+) 
 
 
 # Get the JawsDB URL from the environment variable
@@ -317,7 +317,7 @@ def logout():
     session.pop('doctor_id', None)
     session.pop('username', None)
     flash('You have been logged out', 'success')
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 # patient model
 class Patient(db.Model):
@@ -347,8 +347,7 @@ class Patient(db.Model):
 
     doctor = db.relationship('Doctor', backref=db.backref('patients', lazy=True))
 
-with app.app_context():
-    db.create_all()  # Create tables in the database if they don't exist
+
 with app.app_context():
     db.create_all()  # Create tables in the database if they don't exist
 
@@ -468,7 +467,7 @@ def delete_patient(patient_id):
     db.session.delete(patient)
     db.session.commit()
     flash('Patient record deleted!', 'success')
-    return redirect(url_for('view_patients'))
+    return redirect(url_for('dashboard'))
 
 # about
 @app.route('/about')
